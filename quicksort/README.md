@@ -1,5 +1,7 @@
 # Algorithm for programming assigment from [this](https://www.coursera.org/learn/algorithm-design-analysis/home) course (week 2).
 
+## Problem description
+
 The file `data.txt` contains all of the integers between 1 and 10,000 (inclusive, with no repeats) in unsorted order. The integer in the ith row of the file gives you the ith entry of an input array.
 Your task is to compute the total number of comparisons used to sort the given input file by QuickSort. As you know, the number of comparisons depends on which elements are chosen as pivots, so we'll ask you to explore three different pivoting rules.
 You should not count comparisons one-by-one. Rather, when there is a recursive call on a subarray of length m, you should simply add m−1 to your running total of comparisons. (This is because the pivot element is compared to each of the other m−1 elements in the subarray in this recursive call.)
@@ -14,3 +16,10 @@ Recall from the lectures that, just before the main Partition subroutine, you sh
 **EXAMPLE:** For the input array 8 2 4 5 7 1 you would consider the first (8), middle (4), and last (1) elements; since 4 is the median of the set {1,4,8}, you would use 4 as your pivot element.
 
 **SUBTLE POINT:** A careful analysis would keep track of the comparisons made in identifying the median of the three candidate elements. You should NOT do this. That is, as in the previous two problems, you should simply add m−1 to your running total of comparisons every time you recurse on a subarray with length m.
+
+## Test data
+|File|Size|First|Last|Median|
+|---|---|---|---|---|
+|data_10.txt|10|25|29|21|
+|data_100.txt|100|615|587|518|
+|data_1000.txt|1000|10297|10184|8921|
