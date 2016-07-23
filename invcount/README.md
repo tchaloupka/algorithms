@@ -7,6 +7,7 @@ Your task is to compute the number of inversions in the file given, where the it
 Because of the large size of this array, you should implement the fast divide-and-conquer algorithm covered in the video lectures.
 
 ## Test cases
-`data_1.txt` > answer: 3
-
-`data_2.txt` > answer: 56
+|File|Result|
+|---|---|
+|data_1.txt|3|
+|data_2.txt|56|
