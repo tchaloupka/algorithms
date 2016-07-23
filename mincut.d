@@ -28,8 +28,7 @@ void main(string[] argv)
 		edges ~= r.map!(a => tuple(v, a));
 	}
 
-	//writeln(edges.data);
-	writeln("Vertex count: ", countVertexes(edges.data, edges.data.length));
+	writeln("G(V,E): ", countVertexes(edges.data, edges.data.length), ", ", edges.data.length);
 
 	auto minCount = int.max;
 	foreach(i; 0..REPEAT)
@@ -67,7 +66,6 @@ auto minCut(Edge[] edges)
 			{
 				i++;
 			}
-			//writeln("i: ", i, ", length: ", valid);
 		}
 	}
 
@@ -76,7 +74,5 @@ auto minCut(Edge[] edges)
 
 auto countVertexes(Edge[] edges, size_t valid)
 {
-	auto c = edges.map!(a => a[0]).take(valid-1).array.sort().uniq.walkLength;
-	//writeln("Remaining Vertexes: ", c);
-	return c;
+	return edges.map!(a => a[0]).take(valid-1).array.sort().uniq.walkLength;
 }
