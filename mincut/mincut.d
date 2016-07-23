@@ -62,10 +62,7 @@ auto minCut(Edge[] edges)
 				swap(edges[i], edges[valid-1]); //to avoid reallocations
 				valid--;
 			}
-			else
-			{
-				i++;
-			}
+			else i++;
 		}
 	}
 
