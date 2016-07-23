@@ -11,7 +11,7 @@ void main(string[] argv)
 {
 	if (argv.length == 1)
 	{
-		writeln("Je nutno zadat jméno souboru s daty");
+		writeln("File with data must be specified!");
 		return;
 	}
 
@@ -19,7 +19,7 @@ void main(string[] argv)
 
 	tmpData = new int[data.length];
 
-	writeln("Pocet inverzi: ", invCount(data));
+	writeln("# of inversions: ", invCount(data));
 }
 
 long invCount(int[] arr)
