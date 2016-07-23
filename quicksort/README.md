@@ -17,7 +17,7 @@ Recall from the lectures that, just before the main Partition subroutine, you sh
 
 **SUBTLE POINT:** A careful analysis would keep track of the comparisons made in identifying the median of the three candidate elements. You should NOT do this. That is, as in the previous two problems, you should simply add m−1 to your running total of comparisons every time you recurse on a subarray with length m.
 
-## Test data
+## Test cases
 |File|Size|First|Last|Median|
 |---|---|---|---|---|
 |data_10.txt|10|25|29|21|
