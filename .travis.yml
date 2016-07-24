@@ -1,0 +1,24 @@
+language: d
+
+d:
+  - dmd-2.071.1
+
+install:
+
+script:
+  - rdmd invcount/invcount.d invcount/data.txt
+  - rdmd mincut/mincut.d mincut/data_1.txt
+  - rdmd quicksort/quicksort.d quicksort/data.txt
+  - rdmd rselect/rselect.d 10 quicksort/data.txt
+
+branches:
+  only:
+    - master
+
+notifications:
+  email: true
+
+sudo: false
+
+matrix:
+exclude:
