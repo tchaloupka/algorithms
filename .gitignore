@@ -3,8 +3,8 @@ docs.json
 __dummy.html
 *.o
 *.obj
-invcount/invcount*
-quicksort/quicksort*
-mincut/mincut*
-rselect/rselect*
-
+invcount/invcount
+quicksort/quicksort
+mincut/mincut
+rselect/rselect
+scc/scc
