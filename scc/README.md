@@ -11,8 +11,9 @@ Your task is to code up the algorithm from the video lectures for computing stro
 Output Format: You should output the sizes of the 5 largest SCCs in the given graph, in decreasing order of sizes, separated by commas (avoid any spaces). So if your algorithm computes the sizes of the five largest SCCs to be 500, 400, 300, 200 and 100, then your answer should be "500,400,300,200,100". If your algorithm finds less than 5 SCCs, then write 0 for the remaining terms. Thus, if your algorithm computes only 3 SCCs whose sizes are 400, 300, and 100, then your answer should be "400,300,100,0,0" 
 
 # Test cases
+
 | File | Answer |
-|--|--|
+|---|---|
 | data_1.txt | 3,3,3,0,0 |
 | data_2.txt | 3,3,2,0,0 |
 | data_3.txt | 3,3,1,1,0 |
