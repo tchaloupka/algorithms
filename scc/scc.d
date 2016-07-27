@@ -10,18 +10,14 @@ import std.typecons;
 
 alias Vertex[] Graph;
 
-struct Arcs
-{
-	size_t max;
-	Tuple!(int,int)[] arcs;
-	alias arcs this;
-}
-
 struct Vertex
 {
-	int[] asc;
+	Appender!(int[]) asc;
 	bool visited;
 }
+
+Graph graph;
+Graph graphInv;
 
 void main(string[] argv)
 {
@@ -31,51 +27,63 @@ void main(string[] argv)
 		return;
 	}
 
-	auto arcs = loadArcs(File(argv[1]).byLine);
-	auto graph = buildGraph(arcs);
-	auto graphInv = buildGraph!(1,0)(arcs);
+	loadGraphs(File(argv[1]).byLine);
 
 	auto leaders = getLeaders(graph);
 	auto components = getComponents(graphInv, leaders);
+
 	components.sort!((a,b) => a > b)();
+
 	writeln("Components sizes: ", components.take(5));
 }
 
-auto loadArcs(T)(T source)
+void loadGraphs(T)(T source)
 {
-	Arcs res;
-	res.arcs = source
+	Appender!(Graph) g;
+	Appender!(Graph) gi;
+
+	size_t arcsCount;
+
+	// parse input lines to arcs range (tuple with from and to vertex indexes)
+	auto arcs = source
 		.map!(a => a.stripRight)
 		.filter!(a => a.length > 0 && a.canFind(' '))
 		.map!((a)
 		{
 			auto i = a.indexOf(' ');
-			auto r = tuple(a[0..i].to!int - 1, a[i+1..$].to!int - 1);
-
-			res.max = max(res.max, r[0], r[1]);
-
+			auto r = tuple(a[0..i].to!int, a[i+1..$].to!int);
 			return r;
-		})
-		.array;
+		});
 
-	return res;
+	// build both graphs at once
+	foreach (arc; arcs)
+	{
+		arcsCount++;
+
+		auto m = max(arc[0], arc[1]); // to get highest vertex index
+
+		// ensure vertex existance in both graphs (append missing ones)
+		if (g.data.length < m)
+			g ~= repeat(Vertex()).take(m - g.data.length);
+
+		if (gi.data.length < m)
+			gi ~= repeat(Vertex()).take(m - gi.data.length);
+
+		// add new arc to vertex
+		g.data[arc[0]-1].asc ~= arc[1] - 1;
+		gi.data[arc[1]-1].asc ~= arc[0] - 1;
+	}
+
+	// set globals
+	graph = g.data;
+	graphInv = gi.data;
+
+	assert(g.data.length == gi.data.length);
+
+	writeln("G(V,E): ", g.data.length, ", ", arcsCount);
 }
 
-auto buildGraph(int F = 0, int T = 1)(Arcs arcs)
-{
-	arcs.arcs.sort!((a,b) => a[F] < b[F]);
-
-	Graph g = new Vertex[arcs.max + 1];
-
-	arcs.chunkBy!(a => a[F])
-		.each!(a => g[a[0]].asc = a[1].map!(a => a[T]).array);
-
-	writeln("G(V,E): ", g.length, ", ", arcs.length);
-
-	return g;
-}
-
-//first pass
+// first pass - get ordered list of vertex indexes for the second pass
 auto getLeaders(Graph g)
 {
 	size_t[] leaders = new size_t[g.length];
@@ -86,7 +94,7 @@ auto getLeaders(Graph g)
 		if (!g[i].visited)
 		{
 			g[i].visited = true;
-			foreach(a; g[i].asc) visit(a);
+			foreach(a; g[i].asc.data) visit(a);
 			leaders[li--] = i;
 		}
 	}
@@ -96,6 +104,7 @@ auto getLeaders(Graph g)
 	return leaders;
 }
 
+// DFS through vertices in leaders order to count SCCs and their vertices
 auto getComponents(Graph g, size_t[] leaders)
 {
 	int[] components;
@@ -106,7 +115,7 @@ auto getComponents(Graph g, size_t[] leaders)
 		{
 			g[i].visited = true;
 			components[$-1]++;
-			foreach(a; g[i].asc) assign(a);
+			foreach(a; g[i].asc.data) assign(a);
 		}
 	}
 
@@ -135,9 +144,7 @@ unittest
 9 7
 9 3`;
 
-	auto arcs = loadArcs(testData.lineSplitter);
-	auto graph = buildGraph(arcs);
-	auto graphInv = buildGraph!(1,0)(arcs);
+	loadGraphs(testData.lineSplitter);
 
 	auto leaders = getLeaders(graph);
 	auto components = getComponents(graphInv, leaders);
