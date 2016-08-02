@@ -8,3 +8,5 @@ quicksort/quicksort
 mincut/mincut
 rselect/rselect
 scc/scc
+heap/heap
+
